@@ -135,10 +135,10 @@
 
     <script>
         // =========================================================
-        // 1. CẤU HÌNH GITHUB CỦA BẠN TẠI ĐÂY
+        // TÔI ĐÃ ĐIỀN SẴN THÔNG TIN GITHUB CỦA BẠN VÀO ĐÂY
         // =========================================================
-        const GITHUB_USER = 'tuanly2k4-rgb'; // VD: 'nguyenvana'
-        const GITHUB_REPO = 'truyen';   // VD: 'kho-truyen'
+        const GITHUB_USER = 'tuanly2k4-rgb'; 
+        const GITHUB_REPO = 'truyen';   
         // =========================================================
 
         const appContainer = document.getElementById('app-container');
@@ -152,7 +152,7 @@
             appContainer.innerHTML = `
                 <div class="error">
                     <strong>Không thể tải dữ liệu:</strong> ${message}<br><br>
-                    <i>Hướng dẫn: Hãy chắc chắn bạn đã thay đổi biến GITHUB_USER và GITHUB_REPO trong mã nguồn, và kho chứa (Repository) của bạn đang ở chế độ Public.</i>
+                    <i>Hướng dẫn: Hãy chắc chắn bạn đã đổi tên Thư mục và File chính xác trên Github.</i>
                 </div>`;
         }
 
@@ -162,14 +162,12 @@
                 const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`);
                 
                 if (!response.ok) {
-                    if (response.status === 404) throw new Error("Không tìm thấy Kho chứa (Repository). Bạn đã điền đúng tên chưa?");
-                    if (response.status === 403) throw new Error("Bị giới hạn lượt truy cập API từ Github, vui lòng thử lại sau.");
-                    throw new Error(`Mã lỗi: ${response.status}`);
+                    throw new Error("Không thể truy cập dữ liệu Github. Đang thử tải lại...");
                 }
 
                 const data = await response.json();
                 
-                // Lọc lấy các thư mục (loại bỏ các file ngoài cùng như README.md nếu có)
+                // Lọc lấy các thư mục (loại bỏ các file ngoài cùng như index.html, README.md)
                 const folders = data.filter(item => item.type === 'dir');
                 renderHome(folders);
 
@@ -215,7 +213,7 @@
 
         function renderHome(folders) {
             if (folders.length === 0) {
-                appContainer.innerHTML = '<p style="text-align:center; margin-top:50px;">Chưa có tác phẩm nào được đăng tải.</p>';
+                appContainer.innerHTML = '<p style="text-align:center; margin-top:50px;">Chưa có tác phẩm nào được đăng tải (Bạn cần tạo Folder trên Github).</p>';
                 return;
             }
 
